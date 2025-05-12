@@ -1,0 +1,39 @@
+
+[
+  {
+    "nom": "BUT Informatique",
+    "universite": "Université de Lyon 1",
+    "ville": "Lyon",
+    "tauxAdmission": 35,
+    "nbCandidatures": 2500,
+    "noteMinimale": 14.5,
+    "selectivite": 4,
+    "criteres": ["Dossier", "Entretien"],
+    "tempsReponse": "Moyen",
+    "commentaire": "Très demandée mais très bien encadrée."
+  },
+  {
+    "nom": "Licence Mathématiques",
+    "universite": "Université Paris-Saclay",
+    "ville": "Grenoble",
+    "tauxAdmission": 60,
+    "nbCandidatures": 1800,
+    "noteMinimale": 12.0,
+    "selectivite": 3,
+    "criteres": ["Dossier"],
+    "tempsReponse": "Rapide",
+    "commentaire": "Bon encadrement et accessible."
+  },
+  {
+    "nom": "BUT Génie Biologique",
+    "universite": "Université de Lille",
+    "ville": "Lille",
+    "tauxAdmission": 25,
+    "nbCandidatures": 3000,
+    "noteMinimale": 15.0,
+    "selectivite": 5,
+    "criteres": ["Dossier", "Lettre de motivation", "Entretien"],
+    "tempsReponse": "Long",
+    "commentaire": "Très sélectif, mais excellente réputation."
+  }
+]
