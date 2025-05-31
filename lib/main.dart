@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:selectivite/screens/add_review_screen.dart';
+
+import 'controllers/universitysearchcontroller.dart';
 import 'screens/home_screen.dart';
 import 'screens/results_screen.dart';
-import 'screens/details_screen.dart';
 
 void main() {
-  runApp(SelectiviteApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UniversitySearchController()),
+      ],
+      child: SelectiviteApp(),
+    ),
+  );
 }
 
 class SelectiviteApp extends StatelessWidget {
@@ -15,14 +24,22 @@ class SelectiviteApp extends StatelessWidget {
       title: 'Sélectivité des formations',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        //primarySwatch: Colors.indigo,
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF4B7EBE)),
+        //primarySwatch: customPrimarySwatch,
+        primaryColor: Color(0xFF4B7EBE), // Redéfini ici
+        fontFamily: 'Roboto',
+        textTheme: TextTheme(
+          headlineSmall: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          bodyLarge: TextStyle(fontSize: 16.0),
+        ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(),
       routes: {
         '/results': (context) => ResultsScreen(formations: []), // temporaire
         /** '/details': (context) => DetailsScreen(),*/
-        '/add-review': (context) => AddReviewScreen(formations: [],),
+        '/add-review': (context) => AddReviewScreen(formations: []),
       },
     );
   }

@@ -1,18 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../controllers/universitysearchcontroller.dart';
+import '../models/program_model.dart';
+import '../models/program_to_search_request_model.dart';
+import '../services/program_service.dart';
 import 'search_bar_screen.dart';
 import 'university_card_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class UniversityDetails extends StatefulWidget {
+  const UniversityDetails({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<UniversityDetails> createState() => _UniversityDetailsState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _UniversityDetailsState extends State<UniversityDetails> {
+
+  List<Program> formations = [];
+
+  final programService = ProgramService();
+
+  final TextEditingController nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Libérer les contrôleurs pour éviter les fuites de mémoire
+    nameController.dispose();
+    //
+    super.dispose();
+  }
+
+  Future<void> search() async {
+    final request = ProgramToSearchRequest(
+      name: nameController.text.isEmpty ? null : nameController.text,
+      //country: countryController.text.isEmpty ? null : countryController.text,
+      //city: cityController.text.isEmpty ? null : cityController.text,
+      //type: typeController.text.isEmpty ? null : typeController.text,
+      page: 0,
+      size: 10,
+      sortField: 'name',
+      sortDirection: 'ASC',
+    );
+
+    try {
+      final results = await programService
+          .searchPrograms(request);
+      setState(() {
+        formations = results;
+      });
+    } catch (e) {
+      print('Erreur : $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,48 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Text("Résultats", style: Theme.of(context).textTheme.headlineSmall),
             SizedBox(height: 10),
             Expanded(
-              child: Consumer<UniversitySearchController>(
-                builder: (context, controller, _) {
-                  if (controller.isLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (controller.universities.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Aucun résultat trouvé.",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Text("Souhaitez-vous créer une nouvelle évaluation ?"),
-                        SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/add-review');
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text("Créer une évaluation"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColorDark,
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                      ],
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    itemCount: controller.universities.length,
-                    itemBuilder: (context, index) {
-                      final university = controller.universities[index];
-                      return UniversityCard(university: university.name);
-                    },
-                  );
+              child: ListView.builder(
+                itemCount: formations.length,
+                itemBuilder: (context, index) {
+                  return UniversityCard(university: formations[index].name);
                 },
               ),
             ),
