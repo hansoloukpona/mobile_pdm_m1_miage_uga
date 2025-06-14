@@ -1,56 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:selectivite/components/program_search_bar_component.dart';
+import 'package:selectivite/models/university_model.dart';
 
+import '../components/program_card_component.dart';
+import '../controllers/programsearchcontroller.dart';
 import '../models/program_model.dart';
-import '../models/program_to_search_request_model.dart';
 import '../services/program_service.dart';
-import 'search_bar_screen.dart';
-import 'university_card_screen.dart';
 
 class UniversityDetails extends StatefulWidget {
-  const UniversityDetails({Key? key}) : super(key: key);
+  final University university;
+
+  const UniversityDetails({super.key, required this.university});
 
   @override
   State<UniversityDetails> createState() => _UniversityDetailsState();
 }
 
 class _UniversityDetailsState extends State<UniversityDetails> {
-
-  List<Program> formations = [];
+  List<Program> programs = [];
 
   final programService = ProgramService();
-
-  final TextEditingController nameController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Libérer les contrôleurs pour éviter les fuites de mémoire
-    nameController.dispose();
-    //
-    super.dispose();
-  }
-
-  Future<void> search() async {
-    final request = ProgramToSearchRequest(
-      name: nameController.text.isEmpty ? null : nameController.text,
-      //country: countryController.text.isEmpty ? null : countryController.text,
-      //city: cityController.text.isEmpty ? null : cityController.text,
-      //type: typeController.text.isEmpty ? null : typeController.text,
-      page: 0,
-      size: 10,
-      sortField: 'name',
-      sortDirection: 'ASC',
-    );
-
-    try {
-      final results = await programService
-          .searchPrograms(request);
-      setState(() {
-        formations = results;
-      });
-    } catch (e) {
-      print('Erreur : $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +35,73 @@ class _UniversityDetailsState extends State<UniversityDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBarEval(),
+            SearchBarEvalProgram(
+              searchController: Provider.of<ProgramSearchController>(
+                context,
+                listen: false,
+              ),
+              universityId: widget.university.id as String,
+            ),
             SizedBox(height: 20),
             Text("Résultats", style: Theme.of(context).textTheme.headlineSmall),
             SizedBox(height: 10),
+
+            _buildLine("Nom", widget.university.name),
+            _buildLine("Pays", widget.university.country),
+            _buildLine("Ville", widget.university.city),
+            _buildLine("Type", widget.university.type),
+            if (widget.university.website != null && widget.university.website!.isNotEmpty)
+              _buildLine("Site web", widget.university.website!),
+
             Expanded(
-              child: ListView.builder(
-                itemCount: formations.length,
-                itemBuilder: (context, index) {
-                  return UniversityCard(university: formations[index].name);
+              child: Consumer<ProgramSearchController>(
+                builder: (context, controller, _) {
+                  if (controller.isLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.programs.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Aucun résultat trouvé.",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "Souhaitez-vous créer une nouvelle évaluation ?",
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/add-review');
+                            },
+                            icon: Icon(Icons.add),
+                            label: Text("Créer une évaluation"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: controller.programs.length,
+                    itemBuilder: (context, index) {
+                      final program = controller.programs[index];
+                      return ProgramCard(program: program);
+                    },
+                  );
                 },
               ),
             ),
@@ -82,95 +110,19 @@ class _UniversityDetailsState extends State<UniversityDetails> {
       ),
     );
   }
-}
 
-/*
-class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  final DataService _dataService = DataService();
-  bool _isLoading = false;
-
-  void _searchFormations() async {
-    setState(() => _isLoading = true);
-
-    List<Formations> allFormations = await _dataService.loadFormations();
-
-
-    String query = _searchController.text.toLowerCase();
-    print(allFormations); // Affiche toutes les formations
-    print("Query: $query");
-
-
-    List<Formations> filtered = allFormations.where((f) {
-      return f.nom.toLowerCase().contains(query) ||
-          f.ville.toLowerCase().contains(query) ||
-          f.universite.toLowerCase().contains(query);
-    }).toList();
-
-    setState(() => _isLoading = false);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResultsScreen(formations: filtered),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sélectivité des universités"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+  Widget _buildLine(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
           children: [
-            Text(
-              "Rechercher une formation ou une ville",
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Ex: informatique, Grenoble...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-            SizedBox(height: 16),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton.icon(
-              onPressed: _searchFormations,
-              icon: Icon(Icons.search),
-              label: Text("Rechercher"),
-            ),
-            SizedBox(height: 24),
-            Divider(),
-            TextButton(
-              onPressed: () {
-                // plus tard : navigation vers ajout d'avis
-                Navigator.pushNamed(context, '/add-review');
-
-              },
-              child: Text("Ajouter un avis ?"),
-            ),
-            TextButton(
-              onPressed: () {
-                // lien vers contact/info
-
-              },
-              child: Text("Besoin d'aide ? Contactez-nous"),
-            ),
+            TextSpan(text: "$label : ", style: TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(text: value),
           ],
         ),
       ),
     );
   }
 }
-*/

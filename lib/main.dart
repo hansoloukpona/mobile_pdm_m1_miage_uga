@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:selectivite/screens/add_review_screen.dart';
 
+import 'controllers/programsearchcontroller.dart';
 import 'controllers/universitysearchcontroller.dart';
 import 'screens/home_screen.dart';
 import 'screens/results_screen.dart';
@@ -11,6 +12,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UniversitySearchController()),
+        ChangeNotifierProvider(create: (_) => ProgramSearchController()),
       ],
       child: SelectiviteApp(),
     ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
@@ -20,11 +21,10 @@ class UniversityService {
       final List jsonList = jsonDecode(response.body);
       return jsonList.map((json) => University.fromJson(json)).toList();
     } else if (response.statusCode == 404) {
-      print('juste vide');
+      log(response.statusCode as String);
       return [];
     } else {
-      print(response.statusCode);
-      print('dgfgfgggfgdfhsghfgghhgjghjhgjhjjjk');
+      log(response.statusCode as String);
       throw Exception('Échec de la recherche');
     }
   }

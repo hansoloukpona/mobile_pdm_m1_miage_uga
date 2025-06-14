@@ -1,26 +1,26 @@
-// widgets/search_bar_screen.dart
+// widgets/university_search_bar_component.dart
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:selectivite/controllers/universitysearchcontroller.dart';
 
-import '../models/university_to_search_request_model.dart';
+class SearchBarEvalUni extends StatelessWidget {
 
-class SearchBarEval extends StatelessWidget {
-  SearchBarEval({super.key});
+  final UniversitySearchController searchController;
+
+  const SearchBarEvalUni({super.key, required this.searchController});
 
   @override
   Widget build(BuildContext context) {
-    final UniversitySearchController universitySearchController = Provider.of<UniversitySearchController>(context, listen: false);
+
     return TextField(
-      controller: universitySearchController.nameController,
+      controller: searchController.nameController,
 
       decoration: InputDecoration(
         hintText: 'Nom de l\'université...',
         suffixIcon: IconButton(
           icon: Icon(Icons.search),
           onPressed: () {
-            universitySearchController.search();
+            searchController.search();
           },
         ),
         border: OutlineInputBorder(
@@ -33,10 +33,10 @@ class SearchBarEval extends StatelessWidget {
 
       onSubmitted: (_) {
         /*final request = UniversityToSearchRequest(
-          name: universitySearchController.nameController.text,
+          name: searchController.nameController.text,
           // autres champs...
         );*/
-        universitySearchController.search();
+        searchController.search();
       },
     );
   }

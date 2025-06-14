@@ -7,9 +7,9 @@
     "tauxAdmission": 35,
     "nbCandidatures": 2500,
     "noteMinimale": 14.5,
-    "selectivite": 4,
-    "criteres": ["Dossier", "Entretien"],
-    "tempsReponse": "Moyen",
+    "selectiviteRessentie": 4,
+    "criteresSelection": ["Dossier", "Entretien"],
+    "delaiReponse": "Moyen",
     "commentaire": "Très demandée mais très bien encadrée."
   },
   {
@@ -19,9 +19,9 @@
     "tauxAdmission": 60,
     "nbCandidatures": 1800,
     "noteMinimale": 12.0,
-    "selectivite": 3,
-    "criteres": ["Dossier"],
-    "tempsReponse": "Rapide",
+    "selectiviteRessentie": 3,
+    "criteresSelection": ["Dossier"],
+    "delaiReponse": "Rapide",
     "commentaire": "Bon encadrement et accessible."
   },
   {
@@ -31,9 +31,9 @@
     "tauxAdmission": 25,
     "nbCandidatures": 3000,
     "noteMinimale": 15.0,
-    "selectivite": 5,
-    "criteres": ["Dossier", "Lettre de motivation", "Entretien"],
-    "tempsReponse": "Long",
+    "selectiviteRessentie": 5,
+    "criteresSelection": ["Dossier", "Lettre de motivation", "Entretien"],
+    "delaiReponse": "Long",
     "commentaire": "Très sélectif, mais excellente réputation."
   }
 ]

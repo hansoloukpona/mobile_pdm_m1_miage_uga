@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components/university_card_component.dart';
+import '../components/university_search_bar_component.dart';
 import '../controllers/universitysearchcontroller.dart';
-import 'search_bar_screen.dart';
-import 'university_card_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBarEval(),
+            SearchBarEvalUni(
+              searchController: Provider.of<UniversitySearchController>(
+                context,
+                listen: false,
+              ),
+            ),
             SizedBox(height: 20),
             Text("Résultats", style: Theme.of(context).textTheme.headlineSmall),
             SizedBox(height: 10),
@@ -43,26 +47,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Aucun résultat trouvé.",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Text("Souhaitez-vous créer une nouvelle évaluation ?"),
-                        SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/add-review');
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text("Créer une évaluation"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColorDark,
-                            foregroundColor: Colors.white,
+                        children: [
+                          Text(
+                            "Aucun résultat trouvé.",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Text(
+                            "Souhaitez-vous créer une nouvelle évaluation ?",
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/add-review');
+                            },
+                            icon: Icon(Icons.add),
+                            label: Text("Créer une évaluation"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
@@ -71,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: controller.universities.length,
                     itemBuilder: (context, index) {
                       final university = controller.universities[index];
-                      return UniversityCard(university: university.name);
+                      return UniversityCard(university: university);
                     },
                   );
                 },
@@ -83,94 +93,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-/*
-class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  final DataService _dataService = DataService();
-  bool _isLoading = false;
-
-  void _searchFormations() async {
-    setState(() => _isLoading = true);
-
-    List<Formations> allFormations = await _dataService.loadFormations();
-
-
-    String query = _searchController.text.toLowerCase();
-    print(allFormations); // Affiche toutes les formations
-    print("Query: $query");
-
-
-    List<Formations> filtered = allFormations.where((f) {
-      return f.nom.toLowerCase().contains(query) ||
-          f.ville.toLowerCase().contains(query) ||
-          f.universite.toLowerCase().contains(query);
-    }).toList();
-
-    setState(() => _isLoading = false);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ResultsScreen(formations: filtered),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sélectivité des universités"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              "Rechercher une formation ou une ville",
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Ex: informatique, Grenoble...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-            SizedBox(height: 16),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton.icon(
-              onPressed: _searchFormations,
-              icon: Icon(Icons.search),
-              label: Text("Rechercher"),
-            ),
-            SizedBox(height: 24),
-            Divider(),
-            TextButton(
-              onPressed: () {
-                // plus tard : navigation vers ajout d'avis
-                Navigator.pushNamed(context, '/add-review');
-
-              },
-              child: Text("Ajouter un avis ?"),
-            ),
-            TextButton(
-              onPressed: () {
-                // lien vers contact/info
-
-              },
-              child: Text("Besoin d'aide ? Contactez-nous"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-*/

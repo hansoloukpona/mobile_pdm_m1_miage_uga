@@ -1,0 +1,30 @@
+
+[
+  {
+    "id": "35",
+    "name": "MIAGE",
+    "level": "Master",
+    "duration": "2 ans",
+    "description": "Méthodes informatique appliquée à la gestion d'entreprise",
+    "universityId": "35",
+    "field": "Informatique de Gestion"
+  },
+  {
+    "id": "60",
+    "name": "MIASHS",
+    "level": "Licence",
+    "duration": "3 ans",
+    "description": "Méthodes informatique appliquée aux Sciences Humaines et Sociales",
+    "universityId": "60",
+    "field": "Informatique et Science Humaines"
+  },
+  {
+    "name": "Biologie",
+    "description": "Biologie",
+    "duration": "3 ans",
+    "id": "25",
+    "field": "Biologie",
+    "universityId": "25",
+    "level": "Licence"
+  }
+]

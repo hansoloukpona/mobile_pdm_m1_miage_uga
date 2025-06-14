@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
@@ -18,6 +19,7 @@ class ProgramService {
 
     if (response.statusCode == 200) {
       final List jsonList = jsonDecode(response.body);
+      log(response.statusCode as String);
       return jsonList.map((json) => Program.fromJson(json)).toList();
     } else {
       throw Exception('Échec de la recherche');

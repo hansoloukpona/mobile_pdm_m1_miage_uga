@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
-import '../models/university_to_search_request_model.dart';
+import 'package:flutter/services.dart';
+
 import '../models/university_model.dart';
+import '../models/university_to_search_request_model.dart';
 import '../services/university_service.dart';
 
 class UniversitySearchController extends ChangeNotifier {
@@ -42,10 +47,14 @@ class UniversitySearchController extends ChangeNotifier {
     notifyListeners();
 
     try {
-    universities = await _universityService.searchUniversities(request);
+    //universities = await _universityService.searchUniversities(request);
+      final String response = await rootBundle.loadString('lib/assets/data/universities.json');
+      final List<dynamic> data = json.decode(response);
+      universities = data.map((e) => University.fromJson(e)).toList();
     } catch (e) {
-      print('Erreur : $e');
+      log('Erreur : $e');
     }
+
     isLoading = false;
     notifyListeners();
   }
