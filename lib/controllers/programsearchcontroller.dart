@@ -11,6 +11,7 @@ import '../services/program_service.dart';
 class ProgramSearchController extends ChangeNotifier {
   final ProgramService _programService = ProgramService();
 
+  List<Program> allPrograms = [];
   List<Program> programs = [];
   bool isLoading = false;
 
@@ -90,9 +91,10 @@ class ProgramSearchController extends ChangeNotifier {
         'lib/assets/data/programs.json',
       );
       final List<dynamic> data = json.decode(response);
-      programs = data.map((e) => Program.fromJson(e)).toList();
+      allPrograms = data.map((e) => Program.fromJson(e)).toList();
+      programs = allPrograms;
     } catch (e) {
-      print('Erreur : $e');
+      log('Erreur : $e');
     }
 
     isLoading = false;
@@ -100,20 +102,23 @@ class ProgramSearchController extends ChangeNotifier {
   }
 
   Future<void> filterPrograms() async {
-    String? entryForFilter =
-        nameController.text.isEmpty ? null : nameController.text;
 
-    isLoading = true;
-    notifyListeners();
+    if(nameController.text.isEmpty) {
+      programs = allPrograms;
+    } else {
+      isLoading = true;
+      notifyListeners();
 
-    try {
-      final results = await _programService.filterFilieres(
-        entryForFilter as String,
-        programs,
-      );
-      programs = results;
-    } catch (e) {
-      log('Erreur : $e');
+      String? entryForFilter = nameController.text;
+      try {
+        final results = _programService.filterFilieres(
+          entryForFilter,
+          programs,
+        );
+        programs = results;
+      } catch (e) {
+        log('Erreur : $e');
+      }
     }
 
     isLoading = false;

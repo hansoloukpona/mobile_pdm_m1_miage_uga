@@ -17,6 +17,19 @@ class UniversityDetails extends StatefulWidget {
 
 class _UniversityDetailsState extends State<UniversityDetails> {
 
+  late ProgramSearchController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Provider.of<ProgramSearchController>(context, listen: false);
+
+    // Appel différé après que le widget soit construit
+    Future.microtask(() {
+      _controller.getallByUniversityId(widget.university.id!);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

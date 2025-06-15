@@ -8,7 +8,7 @@ class SearchBarEvalProgram extends StatelessWidget {
 
   final ProgramSearchController searchController;
 
-  final String universityId;
+  final String universityId; //TODO Should this be removed ? (because not use anymore)
 
   const SearchBarEvalProgram({super.key, required this.searchController, required this.universityId});
 
@@ -23,7 +23,7 @@ class SearchBarEvalProgram extends StatelessWidget {
         suffixIcon: IconButton(
           icon: Icon(Icons.search),
           onPressed: () {
-            searchController.search(universityId);
+            searchController.filterPrograms();
           },
         ),
         border: OutlineInputBorder(
@@ -34,8 +34,11 @@ class SearchBarEvalProgram extends StatelessWidget {
         fillColor: Colors.white,
       ),
 
+      onChanged: (_) {
+        searchController.filterPrograms();
+      },
       onSubmitted: (_) {
-        searchController.search(universityId);
+        searchController.filterPrograms();
       },
     );
   }
