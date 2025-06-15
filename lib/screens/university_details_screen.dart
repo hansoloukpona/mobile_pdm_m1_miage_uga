@@ -5,8 +5,6 @@ import 'package:selectivite/models/university_model.dart';
 
 import '../components/program_card_component.dart';
 import '../controllers/programsearchcontroller.dart';
-import '../models/program_model.dart';
-import '../services/program_service.dart';
 
 class UniversityDetails extends StatefulWidget {
   final University university;
@@ -18,9 +16,6 @@ class UniversityDetails extends StatefulWidget {
 }
 
 class _UniversityDetailsState extends State<UniversityDetails> {
-  List<Program> programs = [];
-
-  final programService = ProgramService();
 
   @override
   Widget build(BuildContext context) {

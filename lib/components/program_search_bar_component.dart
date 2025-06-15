@@ -19,7 +19,7 @@ class SearchBarEvalProgram extends StatelessWidget {
       controller: searchController.nameController,
 
       decoration: InputDecoration(
-        hintText: 'Nom de l\'université...',
+        hintText: 'Nom de la filière...',
         suffixIcon: IconButton(
           icon: Icon(Icons.search),
           onPressed: () {

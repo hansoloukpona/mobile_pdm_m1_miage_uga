@@ -3,16 +3,16 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
+import '../config/api_config.dart';
 import '../models/university_model.dart';
 import '../models/university_to_search_request_model.dart';
 
 class UniversityService {
 
   Future<List<University>> searchUniversities(UniversityToSearchRequest criteria) async {
-    final baseUrl = Uri.parse('http://192.168.73.42:8080');
 
     final response = await http.post(
-      Uri.parse('$baseUrl/search/university'),
+      Uri.parse('${ApiConfig.baseUrl}/search/university'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(criteria.toJson()),
     );
