@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:selectivite/models/university_model.dart';
 
 import '../screens/university_details_screen.dart';
+import 'card_list_eval_bouton_component.dart';
 import 'card_list_standard_bouton_component.dart';
 
 class UniversityCard extends StatelessWidget {
@@ -83,7 +84,7 @@ class UniversityCard extends StatelessWidget {
                 children: [
                   Cardliststandardbouton(value: Text("Filières")),
                   SizedBox(height: 8.0),
-                  Cardliststandardbouton(value: Text("Évaluer")),
+                  Cardlistevalbouton(value: Text("Évaluer")),
                 ],
               ),
             ],

@@ -41,7 +41,7 @@ class SelectiviteApp extends StatelessWidget {
       routes: {
         '/results': (context) => ResultsScreen(formations: []), // temporaire
         /** '/details': (context) => DetailsScreen(),*/
-        '/add-review': (context) => AddReviewScreen(formations: []),
+        '/add_review_screen': (context) => AddReviewScreen(formations: []),
       },
     );
   }

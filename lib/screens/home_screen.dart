@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 20),
                           ElevatedButton.icon(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/add-review');
+                              Navigator.pushNamed(context, '/add_review_screen');
                             },
                             icon: Icon(Icons.add),
                             label: Text("Créer une évaluation"),
