@@ -65,7 +65,21 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              const SizedBox(height: 20),
+              // Sélection de la formation
+              /* DropdownButtonFormField<Formations>(
+                value: selectedFormation,
+                hint: const Text("Choisissez une formation"),
+                items: widget.formations.map((f) {
+                  return DropdownMenuItem<Formations>(
+                    value: f,
+                    child: Text("${f.nom} (${f.universite})"),
+                  );
+                }).toList(),
+                onChanged: (val) => setState(() => selectedFormation = val),
+                validator: (val) =>
+                val == null ? "Sélectionnez une formation" : null,
+              ),
+              const SizedBox(height: 20),*/
 
               // Taux d'admission
               TextFormField(

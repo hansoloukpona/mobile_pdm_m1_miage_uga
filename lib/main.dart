@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:selectivite/screens/add2_review_screen.dart';
+import 'package:selectivite/screens/add_review_screen.dart';
+import 'package:selectivite/screens/submit_evaluation_screen.dart';
+import 'package:selectivite/models/formations.dart';
 
 import 'controllers/programsearchcontroller.dart';
 import 'controllers/universitysearchcontroller.dart';
@@ -39,9 +42,26 @@ class SelectiviteApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        '/results': (context) => Eval_Brut_Search_Screen(), // temporaire
+        '/results': (context) => ResultsScreen(formations: []), // temporaire
         /** '/details': (context) => DetailsScreen(),*/
-        '/add_review_screen': (context) => AddReviewScreen(programId: '',),
+        //'/add_review_screen': (context) => SubmitEvaluationScreen(formation: formation),
+        '/add_review_screen': (context) {
+          final formationTest = Formations(
+            nom: 'Computer Science',
+            ville: 'Lyon',
+            universite: 'University of Example',
+            tauxAdmission: 30.5,
+            nbCandidatures: 1200,
+            noteMinimale: 14.0,
+            selectiviteRessentie: 4,
+            criteresSelection: ['Dossier', 'Lettre de motivation'],
+            delaiReponse: 'Moyen',
+            commentaire: 'Très bonne formation',
+            avis: [], // ou null si tu veux
+          );
+
+          return SubmitEvaluationScreen(formation: formationTest);
+        },
       },
     );
   }
