@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:selectivite/components/program_search_bar_component.dart';
 
 import '../controllers/programsearchcontroller.dart';
-import '../models/formations.dart';
 import 'details_screen.dart';
 
 class Eval_Brut_Search_Screen extends StatelessWidget {

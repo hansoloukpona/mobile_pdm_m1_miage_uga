@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:selectivite/dtos/evaluation_to_create_request_model.dart';
 import 'package:selectivite/models/evaluation_model.dart';
 
 import '../config/api_config.dart';
-import '../dtos/program_to_search_request_model.dart';
-import '../models/program_model.dart';
 
 class EvaluationService {
 
