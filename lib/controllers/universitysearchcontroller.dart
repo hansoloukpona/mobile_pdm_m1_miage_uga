@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../dtos/university_to_search_request_model.dart';
 import '../models/university_model.dart';
-import '../models/university_to_search_request_model.dart';
 import '../services/university_service.dart';
 
 class UniversitySearchController extends ChangeNotifier {

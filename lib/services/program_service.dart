@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 import '../config/api_config.dart';
+import '../dtos/program_to_search_request_model.dart';
 import '../models/program_model.dart';
-import '../models/program_to_search_request_model.dart';
 
 class ProgramService {
 

@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../dtos/program_to_search_request_model.dart';
 import '../models/program_model.dart';
-import '../models/program_to_search_request_model.dart';
 import '../services/program_service.dart';
 
 class ProgramSearchController extends ChangeNotifier {
