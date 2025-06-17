@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import '../models/formations.dart';
 
 class AddReviewScreen extends StatefulWidget {
-  final List<Formations> formations;
+  //final List<Formations> formations;
 
-  const AddReviewScreen({Key? key, required this.formations}) : super(key: key);
+  const AddReviewScreen({
+    Key? key
+    //, required this.formations
+  }) : super(key: key);
 
   @override
   State<AddReviewScreen> createState() => _AddReviewScreenState();
@@ -66,7 +69,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           child: ListView(
             children: [
               // Sélection de la formation
-              DropdownButtonFormField<Formations>(
+              /* DropdownButtonFormField<Formations>(
                 value: selectedFormation,
                 hint: const Text("Choisissez une formation"),
                 items: widget.formations.map((f) {
@@ -79,7 +82,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 validator: (val) =>
                 val == null ? "Sélectionnez une formation" : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 20),*/
 
               // Taux d'admission
               TextFormField(
