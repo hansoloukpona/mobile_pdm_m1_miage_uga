@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:selectivite/screens/program_selection_screen.dart';
 
 import '../components/university_card_component.dart';
 import '../components/university_search_bar_component.dart';
 import '../controllers/universitysearchcontroller.dart';
+import 'add_review_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -92,4 +94,35 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  void handleAddEvaluation(BuildContext context, {String? programId}) {
+    if (programId != null) {
+      // Aller directement au formulaire avec l’id
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AddReviewScreen(programId: programId),
+        ),
+      );
+    } else {
+      // Sinon : sélectionner une filière d’abord
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ProgramSelectionScreen(
+            onProgramSelected: (selectedProgramId) {
+              Navigator.pop(context); // Fermer la page de sélection
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AddReviewScreen(programId: selectedProgramId),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    }
+  }
+
 }

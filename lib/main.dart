@@ -39,9 +39,9 @@ class SelectiviteApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        '/results': (context) => ResultsScreen(formations: []), // temporaire
+        '/results': (context) => Eval_Brut_Search_Screen(), // temporaire
         /** '/details': (context) => DetailsScreen(),*/
-        '/add_review_screen': (context) => AddReviewScreen(formations: []),
+        '/add_review_screen': (context) => AddReviewScreen(programId: '',),
       },
     );
   }

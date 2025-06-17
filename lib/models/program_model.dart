@@ -4,7 +4,7 @@ part 'program_model.g.dart';
 
 @JsonSerializable()
 class Program {
-  String? id;
+  String id;
   String name;
   String? description;
   String level;
@@ -13,7 +13,7 @@ class Program {
   String universityId;
 
 
-  Program(this.name, this.level, this.field, this.universityId);
+  Program(this.id, this.name, this.level, this.field, this.universityId);
 
   factory Program.fromJson(Map<String, dynamic> json) =>
       _$ProgramFromJson(json);

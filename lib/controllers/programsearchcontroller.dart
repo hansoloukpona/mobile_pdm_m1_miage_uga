@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:selectivite/dtos/program_to_display_model.dart';
 
 import '../dtos/program_to_search_request_model.dart';
 import '../models/program_model.dart';
@@ -11,8 +12,9 @@ import '../services/program_service.dart';
 class ProgramSearchController extends ChangeNotifier {
   final ProgramService _programService = ProgramService();
 
-  List<Program> allPrograms = [];
-  List<Program> programs = [];
+  List<ProgramToDisplay> brutSearchResultOfProgram = []; //TODO Changer par une liste d'un dto spécial qui inclus le nom de l'université et sa ville
+  List<Program> allProgramsOfAUni = [];
+  List<Program> filteredProgramsOfAUni = [];
   bool isLoading = false;
 
   // Déclaration des TextEditingController
@@ -59,7 +61,7 @@ class ProgramSearchController extends ChangeNotifier {
         'lib/assets/data/programs.json',
       );
       final List<dynamic> data = json.decode(response);
-      programs = data.map((e) => Program.fromJson(e)).toList();
+      filteredProgramsOfAUni = data.map((e) => Program.fromJson(e)).toList();
     } catch (e) {
       log('Erreur : $e');
     }
@@ -91,8 +93,40 @@ class ProgramSearchController extends ChangeNotifier {
         'lib/assets/data/programs.json',
       );
       final List<dynamic> data = json.decode(response);
-      allPrograms = data.map((e) => Program.fromJson(e)).toList();
-      programs = allPrograms;
+      allProgramsOfAUni = data.map((e) => Program.fromJson(e)).toList();
+      filteredProgramsOfAUni = allProgramsOfAUni;
+    } catch (e) {
+      log('Erreur : $e');
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> searchAnyProgram() async {
+    final request = ProgramToSearchRequest(
+      name: nameController.text.isEmpty ? null : nameController.text,
+      page: 0,
+      size: 10,
+      sortField: 'name',
+      sortDirection: 'ASC',
+    );
+
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      /*final results = await programService
+          .searchPrograms(request);
+      setState(() {
+        programs = results;
+      });*/
+
+      final String response = await rootBundle.loadString(
+        'lib/assets/data/programs.json',
+      );
+      final List<dynamic> data = json.decode(response);
+      brutSearchResultOfProgram = data.map((e) => ProgramToDisplay.fromJson(e)).toList();
     } catch (e) {
       log('Erreur : $e');
     }
@@ -104,7 +138,7 @@ class ProgramSearchController extends ChangeNotifier {
   Future<void> filterPrograms() async {
 
     if(nameController.text.isEmpty) {
-      programs = allPrograms;
+      filteredProgramsOfAUni = allProgramsOfAUni;
     } else {
       isLoading = true;
       notifyListeners();
@@ -113,9 +147,9 @@ class ProgramSearchController extends ChangeNotifier {
       try {
         final results = _programService.filterFilieres(
           entryForFilter,
-          programs,
+          filteredProgramsOfAUni,
         );
-        programs = results;
+        filteredProgramsOfAUni = results;
       } catch (e) {
         log('Erreur : $e');
       }

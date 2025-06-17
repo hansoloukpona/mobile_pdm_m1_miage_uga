@@ -8,12 +8,12 @@ part of 'program_model.dart';
 
 Program _$ProgramFromJson(Map<String, dynamic> json) =>
     Program(
+        json['id'] as String,
         json['name'] as String,
         json['level'] as String,
         json['field'] as String,
         json['universityId'] as String,
       )
-      ..id = json['id'] as String?
       ..description = json['description'] as String?
       ..duration = json['duration'] as String?;
 

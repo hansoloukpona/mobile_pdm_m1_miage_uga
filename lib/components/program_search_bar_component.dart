@@ -8,9 +8,7 @@ class SearchBarEvalProgram extends StatelessWidget {
 
   final ProgramSearchController searchController;
 
-  final String universityId; //TODO Should this be removed ? (because not use anymore)
-
-  const SearchBarEvalProgram({super.key, required this.searchController, required this.universityId});
+  const SearchBarEvalProgram({super.key, required this.searchController});
 
   @override
   Widget build(BuildContext context) {

@@ -48,7 +48,6 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                 context,
                 listen: false,
               ),
-              universityId: widget.university.id as String,
             ),
             SizedBox(height: 20),
             Text("Résultats", style: Theme.of(context).textTheme.headlineSmall),
@@ -68,7 +67,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                     return Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.programs.isEmpty) {
+                  if (controller.filteredProgramsOfAUni.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -104,9 +103,9 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                   }
 
                   return ListView.builder(
-                    itemCount: controller.programs.length,
+                    itemCount: controller.filteredProgramsOfAUni.length,
                     itemBuilder: (context, index) {
-                      final program = controller.programs[index];
+                      final program = controller.filteredProgramsOfAUni[index];
                       return ProgramCard(program: program);
                     },
                   );

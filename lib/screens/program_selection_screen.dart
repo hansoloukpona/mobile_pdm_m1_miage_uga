@@ -6,16 +6,18 @@ import '../controllers/programsearchcontroller.dart';
 import '../models/formations.dart';
 import 'details_screen.dart';
 
-class Eval_Brut_Search_Screen extends StatelessWidget {
+class ProgramSelectionScreen extends StatelessWidget {
 
-  const Eval_Brut_Search_Screen({Key? key}) : super(key: key);
+  final Function(String) onProgramSelected;
+
+  const ProgramSelectionScreen({Key? key, required this.onProgramSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF4B7EBE),
       appBar: AppBar(
-        title: Text("Rechercher une université"),
+        title: Text("Rechercher une filière"),
         backgroundColor: Color(0xFF4B7EBE),
       ),
       body: Padding(
@@ -39,7 +41,7 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.allProgramsOfAUni.isEmpty) {
+                  if (controller.brutSearchResultOfProgram.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -52,23 +54,6 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Souhaitez-vous créer une nouvelle évaluation ?",
-                          ),
-                          SizedBox(height: 20),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/add_review_screen');
-                            },
-                            icon: Icon(Icons.add),
-                            label: Text("Créer une évaluation"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                              Theme.of(context).primaryColorDark,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
                         ],
                       ),
                     );
@@ -77,27 +62,10 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
                   return ListView.builder(
                     itemCount: controller.brutSearchResultOfProgram.length,
                     itemBuilder: (context, index) {
-                      final programwithuni = controller.brutSearchResultOfProgram[index];
-                      return Card(
-                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        elevation: 2,
-                        child: ListTile(
-                          title: Text(
-                            programwithuni.name,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(programwithuni.uniName),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailsScreen(programwithuni: programwithuni),
-                              ),
-                            );
-                          },
-                        ),
+                      final program = controller.brutSearchResultOfProgram[index];
+                      return ListTile(
+                        title: Text(program.name),
+                        onTap: () => onProgramSelected(program.id),
                       );
                     },
                   );
@@ -110,3 +78,16 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+/**onTap: () {
+Navigator.push(
+context,
+MaterialPageRoute(
+builder: (context) => DetailsScreen(formation: formation),
+),
+);
+}*/

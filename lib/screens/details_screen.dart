@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../models/formations.dart';
+import '../dtos/program_to_display_model.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final Formations formation;
+  final ProgramToDisplay programwithuni;
   /** const DetailsScreen({super.key, required Formations formation, required formations}); */
-  const DetailsScreen({super.key,  required this.formation});
+  const DetailsScreen({super.key,  required this.programwithuni});
   @override
   Widget build(BuildContext context) {
     /** final formation = ModalRoute.of(context)!.settings.arguments as Formations;*/
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(formation.nom),
+        title: Text(programwithuni.name),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -27,44 +27,55 @@ class DetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  formation.nom,
+                  programwithuni.name,
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  formation.ville,
+                  programwithuni.city,
                   style: TextStyle(fontSize: 18, color: Colors.grey[700]),
                 ),
                 Divider(height: 32),
 
-                _buildRow("🎯 Taux d'admission", "${formation.tauxAdmission ?? 'N/A'} %"),
-                _buildRow("📥 Nb. de candidatures", "${formation.nbCandidatures ?? 'N/A'}"),
-                _buildRow("📊 Note minimale", "${formation.noteMinimale ?? 'N/A'}"),
-                _buildRow("⏱ Temps de réponse", formation.delaiReponse ?? "Inconnu"),
+                _buildRow("Qualité", "${programwithuni.qualityScore ?? 'N/A'} %"),
+                //_buildRow("🎯 Sélectivité", "${programwithuni.selectivityScore ?? 'N/A'} %"),
+                _buildRow("Encadrement", "${programwithuni.supervisionScore ?? 'N/A'}"),
+                _buildRow("Rigeur", "${programwithuni.rigorScore ?? 'N/A'}"),
+                _buildRow("Satisfaction" /*de qui?*/, "${programwithuni.satisfactionScore ?? 'N/A'}"),
+
+                /*_buildRow("🎯 Taux d'admission", "${programwithuni.tauxAdmission ?? 'N/A'} %"),
+                _buildRow("📥 Nb. de candidatures", "${programwithuni.nbCandidatures ?? 'N/A'}"),
+                _buildRow("📊 Note minimale", "${programwithuni.noteMinimale ?? 'N/A'}"), //TODO écrire une fonction qui permet d'obenir une valeur en français de la note minimale quelle que soit le système de notation
+                _buildRow("⏱ Temps de réponse", programwithuni.delaiReponse ?? "Inconnu"),*/
 
                 SizedBox(height: 16),
                 Text("⭐ Sélectivité ressentie", style: TextStyle(fontWeight: FontWeight.bold)),
                 Row(
                   children: List.generate(5, (i) {
                     return Icon(
-                      i < (formation.selectiviteRessentie ?? 0) ? Icons.star : Icons.star_border,
+                      i < (programwithuni.selectivityScore ?? 0) ? Icons.star : Icons.star_border,
                       color: Colors.orange,
                     );
                   }),
                 ),
 
-                SizedBox(height: 16),
+                /*SizedBox(height: 16),
                 Text("📋 Critères de sélection", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                if (formation.criteresSelection != null && formation.criteresSelection!.isNotEmpty)
-                  ...formation.criteresSelection!.map((crit) => Text("• $crit")).toList()
+                SizedBox(height: 8),*/
+                /*if (programwithuni.criteresSelection != null && programwithuni.criteresSelection!.isNotEmpty)
+                  ...programwithuni.criteresSelection!.map((crit) => Text("• $crit")).toList()
                 else
-                  Text("Non spécifiés"),
+                  Text("Non spécifiés"),*/ //Remplacer ceci par les tags ue fois qu'ils seront intégrés
 
                 SizedBox(height: 24),
-                Text("📝 Commentaire", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Commentaire", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
-                Text(formation.commentaire ?? "Aucun commentaire disponible."),
+
+                if (programwithuni.comment != null && programwithuni.comment!.isNotEmpty)
+                  ...programwithuni.comment!.map((crit) => Text("• $crit")).toList() //TODO une meilleure séparation ?
+                else
+                  Text("Non spécifiés"),
+                //Text(programwithuni.comment ?? "Aucun commentaire disponible."),
               ],
             ),
           ),
