@@ -5,7 +5,7 @@ import 'package:selectivite/screens/program_selection_screen.dart';
 import '../components/university_card_component.dart';
 import '../components/university_search_bar_component.dart';
 import '../controllers/universitysearchcontroller.dart';
-import 'add2_review_screen.dart';
+import 'add_review_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

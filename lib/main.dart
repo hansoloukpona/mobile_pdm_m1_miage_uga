@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:selectivite/screens/add2_review_screen.dart';
-import 'package:selectivite/screens/add_review_screen.dart';
 import 'package:selectivite/screens/submit_evaluation_screen.dart';
 import 'package:selectivite/models/formations.dart';
 
@@ -42,7 +40,7 @@ class SelectiviteApp extends StatelessWidget {
       ),
       home: HomeScreen(),
       routes: {
-        '/results': (context) => ResultsScreen(formations: []), // temporaire
+        '/results': (context) => Eval_Brut_Search_Screen(), // temporaire
         /** '/details': (context) => DetailsScreen(),*/
         //'/add_review_screen': (context) => SubmitEvaluationScreen(formation: formation),
         '/add_review_screen': (context) {
