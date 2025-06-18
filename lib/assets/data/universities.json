@@ -2,7 +2,7 @@
 [
   {
     "id": "35",
-    "name": "BUT Informatique",
+    "name": "Université de Lyon",
     "country": "France",
     "city": "Lyon",
     "website": "universitedelyon1.net",
@@ -10,14 +10,14 @@
   },
   {
     "id": "60",
-    "name": "Licence Mathématiques",
+    "name": "Université Paris-Saclay",
     "country": "France",
     "city": "Grenoble",
     "website": "universiteparis-saclay.fr",
     "type": "public"
   },
   {
-    "name": "BUT Génie Biologique",
+    "name": "Université de Lille",
     "website": "universitedelille.com",
     "city": "Lille",
     "id": "25",

@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:selectivite/components/program_search_bar_component.dart';
+import 'package:selectivite/dtos/program_to_display_model.dart';
 
+import '../components/program_brut_search_bar_component.dart';
 import '../controllers/programsearchcontroller.dart';
+import 'details_screen.dart';
 
 class ProgramSelectionScreen extends StatelessWidget {
 
-  final Function(String) onProgramSelected;
+  final Function(ProgramToDisplay) onProgramSelected;
 
   const ProgramSelectionScreen({Key? key, required this.onProgramSelected}) : super(key: key);
 
@@ -23,7 +27,7 @@ class ProgramSelectionScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBarEvalProgram(
+            BrutSearchBarEvalProgram(
               searchController: Provider.of<ProgramSearchController>(
                 context,
                 listen: false,
@@ -61,9 +65,62 @@ class ProgramSelectionScreen extends StatelessWidget {
                     itemCount: controller.brutSearchResultOfProgram.length,
                     itemBuilder: (context, index) {
                       final program = controller.brutSearchResultOfProgram[index];
-                      return ListTile(
-                        title: Text(program.name),
-                        onTap: () => onProgramSelected(program.id),
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 10.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        elevation: 3,
+                        clipBehavior: Clip.antiAlias,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                                Color(0x1A004AAD), // Bleu très léger (~10% opacité)
+                                Color(0x1A004AAD),
+                              ],
+                              stops: [0.0, 0.75, 0.85, 1.0], // Dégradé à partir de 75%
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                            child: Row(
+                              children: [
+                                // Partie cliquable (texte université)
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () => onProgramSelected(program),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          program.name,
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.0),
+                                        Text(
+                                          "Voir les détails de cette université",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 16.0),
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     },
                   );

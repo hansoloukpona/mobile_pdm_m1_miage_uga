@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:selectivite/dtos/program_to_display_model.dart';
 import 'package:selectivite/screens/program_selection_screen.dart';
+import 'package:selectivite/screens/submit_evaluation_screen.dart';
 
 import '../components/university_card_component.dart';
 import '../components/university_search_bar_component.dart';
+import '../controllers/addadvisecontroller.dart';
 import '../controllers/universitysearchcontroller.dart';
-import 'add_review_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -64,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 20),
                           ElevatedButton.icon(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/add_review_screen');
+                              handleAddEvaluation(context);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Créer une évaluation"),
@@ -95,13 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void handleAddEvaluation(BuildContext context, {String? programId}) {
-    if (programId != null) {
+  void handleAddEvaluation(BuildContext context, {ProgramToDisplay? program}) {
+    if (program != null) {
       // Aller directement au formulaire avec l’id
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => AddReviewScreen(programId: programId),
+          builder: (_) => SubmitEvaluationScreen(programwithdetails: program, addAdviseController : Provider.of<AddAdviseController>(
+            context,
+            listen: false,
+          )),
         ),
       );
     } else {
@@ -110,12 +115,15 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => ProgramSelectionScreen(
-            onProgramSelected: (selectedProgramId) {
+            onProgramSelected: (selectedProgram) {
               Navigator.pop(context); // Fermer la page de sélection
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AddReviewScreen(programId: selectedProgramId),
+                  builder: (_) => SubmitEvaluationScreen(programwithdetails: selectedProgram, addAdviseController : Provider.of<AddAdviseController>(
+                    context,
+                    listen: false,
+                  )),
                 ),
               );
             },

@@ -60,6 +60,8 @@ flutter:
     - lib/assets/data/formations.json
     - lib/assets/data/universities.json
     - lib/assets/data/programs.json
+    - lib/assets/data/programtodisplay.json
+    - lib/assets/data/evaluation.json
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

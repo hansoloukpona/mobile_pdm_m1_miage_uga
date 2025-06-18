@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:selectivite/components/program_search_bar_component.dart';
+import 'package:selectivite/dtos/program_to_display_model.dart';
 
 import '../controllers/programsearchcontroller.dart';
 import 'details_screen.dart';
@@ -11,10 +12,11 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color(0xFF4B7EBE),
       appBar: AppBar(
-        title: Text("Rechercher une université"),
+        title: Text("Rechercher une filière"),
         backgroundColor: Color(0xFF4B7EBE),
       ),
       body: Padding(
@@ -76,7 +78,7 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
                   return ListView.builder(
                     itemCount: controller.brutSearchResultOfProgram.length,
                     itemBuilder: (context, index) {
-                      final programwithuni = controller.brutSearchResultOfProgram[index];
+                      var programwithuni = controller.brutSearchResultOfProgram[index];
                       return Card(
                         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -89,6 +91,7 @@ class Eval_Brut_Search_Screen extends StatelessWidget {
                           subtitle: Text(programwithuni.uniName),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {
+                            programwithuni = controller.getProgramByIdFromJson(programwithuni.id) as ProgramToDisplay;
                             Navigator.push(
                               context,
                               MaterialPageRoute(

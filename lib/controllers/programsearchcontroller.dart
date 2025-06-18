@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:selectivite/dtos/program_to_display_model.dart';
 
+import '../config/api_config.dart';
 import '../dtos/program_to_search_request_model.dart';
 import '../models/program_model.dart';
 import '../services/program_service.dart';
@@ -12,7 +13,9 @@ import '../services/program_service.dart';
 class ProgramSearchController extends ChangeNotifier {
   final ProgramService _programService = ProgramService();
 
-  List<ProgramToDisplay> brutSearchResultOfProgram = []; //TODO Changer par une liste d'un dto spécial qui inclus le nom de l'université et sa ville
+  List<ProgramToDisplay> brutSearchResultOfProgram =
+  [
+  ]; //TODO Changer par une liste d'un dto spécial qui inclus le nom de l'université et sa ville
   List<Program> allProgramsOfAUni = [];
   List<Program> filteredProgramsOfAUni = [];
   bool isLoading = false;
@@ -28,15 +31,6 @@ class ProgramSearchController extends ChangeNotifier {
     super.dispose();
   }
 
-  /*
-  String? id;
-  String name;
-  String? description;
-  String level;
-  String field;
-  String? duration;
-  String universityId;
-  */
   Future<void> search(String universityId) async {
     final request = ProgramToSearchRequest(
       universityId: universityId,
@@ -123,10 +117,11 @@ class ProgramSearchController extends ChangeNotifier {
       });*/
 
       final String response = await rootBundle.loadString(
-        'lib/assets/data/programs.json',
+        'lib/assets/data/programtodisplay.json',
       );
       final List<dynamic> data = json.decode(response);
-      brutSearchResultOfProgram = data.map((e) => ProgramToDisplay.fromJson(e)).toList();
+      brutSearchResultOfProgram =
+          data.map((e) => ProgramToDisplay.fromJson(e)).toList();
     } catch (e) {
       log('Erreur : $e');
     }
@@ -136,8 +131,7 @@ class ProgramSearchController extends ChangeNotifier {
   }
 
   Future<void> filterPrograms() async {
-
-    if(nameController.text.isEmpty) {
+    if (nameController.text.isEmpty) {
       filteredProgramsOfAUni = allProgramsOfAUni;
     } else {
       isLoading = true;
@@ -157,5 +151,40 @@ class ProgramSearchController extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<ProgramToDisplay?> getProgramById(String programId) async {
+
+    try {
+      final result = _programService.getProgramDetails(programId);
+      return result;
+    } catch (e) {
+      log('Erreur : $e');
+    }
+  }
+
+  Future<ProgramToDisplay?> getProgramByIdFromJson(String programId) async {
+    try {
+      // Lire le contenu brut du fichier JSON
+      final String jsonString = await rootBundle.loadString(
+        ApiConfig.programToDisplayUrl,
+      );
+      final List<dynamic> jsonList = json.decode(jsonString);
+
+      // Recherche du programme avec l'ID donné
+      final programJson = jsonList.firstWhere(
+            (item) => item['id'] == programId,
+        orElse: () => null,
+      );
+
+      if (programJson != null) {
+        return ProgramToDisplay.fromJson(programJson);
+      } else {
+        return null; // Aucun programme trouvé
+      }
+    } catch (e) {
+      log("Erreur lors de la lecture du fichier JSON : $e");
+      return null;
+    }
   }
 }

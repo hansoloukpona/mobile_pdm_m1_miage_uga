@@ -19,7 +19,7 @@ class Cardlistevalbouton extends StatelessWidget {
        minimumSize: Size(90, 36),
        padding: EdgeInsets.symmetric(horizontal: 12),
      ),
-     child: this.value,
+     child: value,
    );
   }
 }

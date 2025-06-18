@@ -14,7 +14,7 @@ class EvaluationToCreateRequest {
   final bool isAnonymous;
 
   EvaluationToCreateRequest({
-    required this.userId,
+    this.userId,
     required this.programId,
     required this.studyYear,
     required this.submissionYear,

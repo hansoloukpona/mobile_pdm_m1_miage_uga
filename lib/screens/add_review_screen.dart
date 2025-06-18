@@ -5,7 +5,7 @@ import '../models/formations.dart';
 class AddReviewScreen extends StatefulWidget {
   final String programId;
 
-  const AddReviewScreen({Key? key, required this.programId}) : super(key: key);
+  const AddReviewScreen({super.key, required this.programId});
 
   @override
   State<AddReviewScreen> createState() => _AddReviewScreenState();
